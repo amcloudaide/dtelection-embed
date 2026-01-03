@@ -1,0 +1,315 @@
+/**
+ * dtElection Poll Embed
+ * Renders and handles voting for embedded dtElection polls
+ */
+(function() {
+    'use strict';
+
+    // Get API URL from WordPress localization or use default
+    var API_URL = (typeof dtelectionConfig !== 'undefined' && dtelectionConfig.apiUrl)
+        ? dtelectionConfig.apiUrl
+        : 'https://dtelection.com/api/v1/embed';
+
+    /**
+     * Initialize all poll containers on the page
+     */
+    function initPolls() {
+        var containers = document.querySelectorAll('.dtelection-poll[data-token]');
+        containers.forEach(function(container) {
+            if (container.dataset.initialized) return;
+            container.dataset.initialized = 'true';
+            loadPoll(container);
+        });
+    }
+
+    /**
+     * Load poll data and render
+     */
+    function loadPoll(container) {
+        var token = container.dataset.token;
+        if (!token) return;
+
+        showLoading(container);
+
+        fetch(API_URL + '/' + encodeURIComponent(token))
+            .then(function(response) {
+                if (!response.ok) {
+                    throw new Error('Poll not found');
+                }
+                return response.json();
+            })
+            .then(function(data) {
+                if (data.data) {
+                    renderPoll(container, data.data, token);
+                } else {
+                    renderPoll(container, data, token);
+                }
+            })
+            .catch(function(error) {
+                showError(container, error.message || 'Could not load poll');
+            });
+    }
+
+    /**
+     * Show loading state
+     */
+    function showLoading(container) {
+        container.textContent = '';
+        var loading = document.createElement('div');
+        loading.className = 'dte-loading';
+        loading.textContent = 'Loading poll...';
+        container.appendChild(loading);
+    }
+
+    /**
+     * Show error state
+     */
+    function showError(container, message) {
+        container.textContent = '';
+        var error = document.createElement('div');
+        error.className = 'dte-error';
+        error.textContent = message || 'Could not load poll';
+        container.appendChild(error);
+    }
+
+    /**
+     * Render poll UI using safe DOM methods
+     */
+    function renderPoll(container, poll, token) {
+        container.textContent = '';
+
+        var pollDiv = document.createElement('div');
+        pollDiv.className = 'dte-poll';
+
+        // Header
+        var header = document.createElement('div');
+        header.className = 'dte-header';
+
+        var title = document.createElement('h3');
+        title.className = 'dte-title';
+        title.textContent = poll.title;
+        header.appendChild(title);
+
+        var brand = document.createElement('a');
+        brand.className = 'dte-brand';
+        brand.href = 'https://dtelection.com';
+        brand.target = '_blank';
+        brand.rel = 'noopener noreferrer';
+        brand.textContent = 'dtElection';
+        header.appendChild(brand);
+
+        pollDiv.appendChild(header);
+
+        // Description
+        if (poll.description) {
+            var desc = document.createElement('p');
+            desc.className = 'dte-desc';
+            desc.textContent = poll.description;
+            pollDiv.appendChild(desc);
+        }
+
+        // Check if poll is closed
+        if (poll.status === 'closed') {
+            renderResults(pollDiv, poll);
+        } else {
+            renderVotingForm(pollDiv, poll, token, container);
+        }
+
+        // Footer
+        var footer = document.createElement('div');
+        footer.className = 'dte-footer';
+        var voteCount = poll.vote_count || 0;
+        footer.textContent = voteCount + ' vote' + (voteCount !== 1 ? 's' : '');
+        pollDiv.appendChild(footer);
+
+        container.appendChild(pollDiv);
+    }
+
+    /**
+     * Render voting form
+     */
+    function renderVotingForm(pollDiv, poll, token, container) {
+        var form = document.createElement('form');
+        form.className = 'dte-form';
+
+        // Name input
+        var nameInput = document.createElement('input');
+        nameInput.type = 'text';
+        nameInput.name = 'name';
+        nameInput.placeholder = 'Your name';
+        nameInput.required = true;
+        nameInput.className = 'dte-input';
+        form.appendChild(nameInput);
+
+        // Options container
+        var optionsDiv = document.createElement('div');
+        optionsDiv.className = 'dte-options';
+
+        var items = poll.poll_type === 'when' ? poll.time_slots : poll.options;
+        var isWhen = poll.poll_type === 'when';
+
+        if (items && items.length > 0) {
+            items.forEach(function(item, index) {
+                var label = document.createElement('label');
+                label.className = 'dte-option';
+
+                var checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.name = 'vote';
+                checkbox.value = item.id;
+
+                var span = document.createElement('span');
+                span.textContent = isWhen ? formatTimeSlot(item) : item.label;
+
+                label.appendChild(checkbox);
+                label.appendChild(span);
+                optionsDiv.appendChild(label);
+            });
+        }
+
+        form.appendChild(optionsDiv);
+
+        // Submit button
+        var submitBtn = document.createElement('button');
+        submitBtn.type = 'submit';
+        submitBtn.className = 'dte-submit';
+        submitBtn.textContent = 'Vote';
+        form.appendChild(submitBtn);
+
+        // Handle form submission
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            handleVote(form, token, container);
+        });
+
+        pollDiv.appendChild(form);
+    }
+
+    /**
+     * Render results (for closed polls)
+     */
+    function renderResults(pollDiv, poll) {
+        var resultsDiv = document.createElement('div');
+        resultsDiv.className = 'dte-results';
+
+        var closedMsg = document.createElement('p');
+        closedMsg.className = 'dte-closed';
+        closedMsg.textContent = 'This poll is closed.';
+        resultsDiv.appendChild(closedMsg);
+
+        pollDiv.appendChild(resultsDiv);
+    }
+
+    /**
+     * Handle vote submission
+     */
+    function handleVote(form, token, container) {
+        var nameInput = form.querySelector('input[name="name"]');
+        var name = nameInput.value.trim();
+
+        if (!name) {
+            alert('Please enter your name');
+            return;
+        }
+
+        var checkboxes = form.querySelectorAll('input[name="vote"]:checked');
+        if (checkboxes.length === 0) {
+            alert('Please select at least one option');
+            return;
+        }
+
+        var votes = [];
+        checkboxes.forEach(function(cb) {
+            votes.push({
+                slot_id: cb.value,
+                response: 'yes'
+            });
+        });
+
+        var submitBtn = form.querySelector('.dte-submit');
+        var originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Submitting...';
+        submitBtn.disabled = true;
+
+        fetch(API_URL + '/' + encodeURIComponent(token) + '/vote', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: name,
+                votes: votes
+            })
+        })
+        .then(function(response) {
+            if (!response.ok) {
+                throw new Error('Vote failed');
+            }
+            return response.json();
+        })
+        .then(function(data) {
+            // Show success and reload poll
+            showSuccess(container, 'Vote recorded!');
+            setTimeout(function() {
+                container.dataset.initialized = '';
+                loadPoll(container);
+            }, 1500);
+        })
+        .catch(function(error) {
+            alert('Could not submit vote. Please try again.');
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+        });
+    }
+
+    /**
+     * Show success message
+     */
+    function showSuccess(container, message) {
+        container.textContent = '';
+        var success = document.createElement('div');
+        success.className = 'dte-success';
+        success.textContent = message;
+        container.appendChild(success);
+    }
+
+    /**
+     * Format time slot for display
+     */
+    function formatTimeSlot(slot) {
+        try {
+            var start = new Date(slot.start_time);
+            var end = new Date(slot.end_time);
+
+            var dateOpts = { weekday: 'short', month: 'short', day: 'numeric' };
+            var timeOpts = { hour: '2-digit', minute: '2-digit' };
+
+            var dateStr = start.toLocaleDateString(undefined, dateOpts);
+            var startTime = start.toLocaleTimeString(undefined, timeOpts);
+            var endTime = end.toLocaleTimeString(undefined, timeOpts);
+
+            return dateStr + ' ' + startTime + ' - ' + endTime;
+        } catch (e) {
+            return slot.start_time + ' - ' + slot.end_time;
+        }
+    }
+
+    // Initialize on DOM ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initPolls);
+    } else {
+        initPolls();
+    }
+
+    // Also check for dynamically added polls
+    if (typeof MutationObserver !== 'undefined') {
+        var observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.addedNodes.length) {
+                    initPolls();
+                }
+            });
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
+    }
+})();

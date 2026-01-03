@@ -1,0 +1,18 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.sublime-*
+
+# WordPress
+wp-config.php
+
+# Node (if adding build process later)
+node_modules/
+package-lock.json
+
+# Logs
+*.log

@@ -1,0 +1,238 @@
+/**
+ * dtElection Poll Embed Styles
+ * Branded styling that matches dtelection.com
+ */
+
+/* Container */
+.dtelection-poll {
+    max-width: 480px;
+    margin: 1em 0;
+}
+
+/* Poll card */
+.dte-poll {
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    max-width: 480px;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 24px;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
+
+.dte-poll *,
+.dte-poll *::before,
+.dte-poll *::after {
+    box-sizing: border-box;
+}
+
+/* Header */
+.dte-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+    gap: 12px;
+}
+
+.dte-title {
+    font-family: 'Sora', 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0;
+    line-height: 1.3;
+    flex: 1;
+}
+
+.dte-brand {
+    font-size: 11px;
+    color: #94a3b8;
+    text-decoration: none;
+    padding: 2px 8px;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    white-space: nowrap;
+    transition: all 0.15s ease;
+}
+
+.dte-brand:hover {
+    color: #6366f1;
+    border-color: #6366f1;
+}
+
+/* Description */
+.dte-desc {
+    font-size: 14px;
+    color: #64748b;
+    margin: 0 0 16px 0;
+    line-height: 1.5;
+}
+
+/* Form */
+.dte-form {
+    margin: 0;
+    padding: 0;
+}
+
+/* Name input */
+.dte-input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: inherit;
+    margin-bottom: 16px;
+    background: #fff;
+    color: #1e293b;
+    transition: all 0.15s ease;
+}
+
+.dte-input::placeholder {
+    color: #94a3b8;
+}
+
+.dte-input:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+/* Options */
+.dte-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.dte-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    background: #fff;
+    margin: 0;
+    font-weight: normal;
+}
+
+.dte-option:hover {
+    border-color: #6366f1;
+    background: #f8fafc;
+}
+
+.dte-option:has(input:checked) {
+    border-color: #6366f1;
+    background: #eef2ff;
+}
+
+.dte-option input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    accent-color: #6366f1;
+    cursor: pointer;
+}
+
+.dte-option span {
+    font-size: 14px;
+    color: #1e293b;
+    line-height: 1.4;
+}
+
+/* Submit button */
+.dte-submit {
+    width: 100%;
+    margin-top: 16px;
+    padding: 12px;
+    background: #6366f1;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 14px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.dte-submit:hover {
+    background: #4f46e5;
+}
+
+.dte-submit:disabled {
+    background: #94a3b8;
+    cursor: not-allowed;
+}
+
+/* Footer */
+.dte-footer {
+    margin-top: 16px;
+    text-align: center;
+    font-size: 13px;
+    color: #94a3b8;
+}
+
+/* States */
+.dte-loading,
+.dte-error,
+.dte-success {
+    padding: 40px;
+    text-align: center;
+    font-size: 14px;
+    border-radius: 16px;
+}
+
+.dte-loading {
+    color: #64748b;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+}
+
+.dte-error {
+    color: #ef4444;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+}
+
+.dte-success {
+    color: #059669;
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+}
+
+/* Results (closed polls) */
+.dte-results {
+    padding: 16px 0;
+}
+
+.dte-closed {
+    font-size: 14px;
+    color: #64748b;
+    text-align: center;
+    margin: 0;
+    padding: 12px;
+    background: #f8fafc;
+    border-radius: 10px;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .dte-poll {
+        padding: 16px;
+        border-radius: 12px;
+    }
+
+    .dte-title {
+        font-size: 16px;
+    }
+
+    .dte-option {
+        padding: 10px;
+    }
+}

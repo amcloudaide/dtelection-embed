@@ -1,0 +1,22 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "dtelection/poll",
+    "title": "dtElection Poll",
+    "category": "embed",
+    "icon": "chart-bar",
+    "description": "Embed a dtElection poll in your content.",
+    "keywords": ["poll", "vote", "survey", "dtelection"],
+    "textdomain": "dtelection-embed",
+    "attributes": {
+        "token": {
+            "type": "string",
+            "default": ""
+        }
+    },
+    "supports": {
+        "html": false,
+        "align": ["wide", "full"]
+    },
+    "editorScript": "file:./index.js"
+}
