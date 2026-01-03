@@ -3,7 +3,7 @@ Contributors: dtelection
 Tags: poll, voting, survey, scheduling, embed
 Requires at least: 5.0
 Tested up to: 6.4
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -71,6 +71,13 @@ The current version uses dtElection branding. Custom styling options are planned
 
 == Changelog ==
 
+= 1.1.0 =
+* Added duplicate vote prevention (remembers if user voted via localStorage)
+* Added "How to Use" documentation page in WordPress admin
+* Added dtElection menu item with full usage guide
+* Shows "already voted" message with voter name
+* Improved user experience for returning visitors
+
 = 1.0.0 =
 * Initial release
 * Shortcode support
@@ -78,6 +85,9 @@ The current version uses dtElection branding. Custom styling options are planned
 * Inline voting
 
 == Upgrade Notice ==
+
+= 1.1.0 =
+Duplicate vote prevention and in-admin documentation page.
 
 = 1.0.0 =
 Initial release of dtElection Poll Embed.
