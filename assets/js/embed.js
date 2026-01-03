@@ -10,6 +10,45 @@
         ? dtelectionConfig.apiUrl
         : 'https://dtelection.com/api/v1/embed';
 
+    var STORAGE_KEY = 'dtelection_voted_polls';
+
+    /**
+     * Check if user has already voted on this poll (localStorage)
+     */
+    function hasVoted(token) {
+        try {
+            var voted = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+            return !!voted[token];
+        } catch (e) {
+            return false;
+        }
+    }
+
+    /**
+     * Get the name used when voting
+     */
+    function getVotedName(token) {
+        try {
+            var voted = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+            return voted[token] || null;
+        } catch (e) {
+            return null;
+        }
+    }
+
+    /**
+     * Mark poll as voted in localStorage
+     */
+    function markAsVoted(token, name) {
+        try {
+            var voted = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+            voted[token] = name;
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(voted));
+        } catch (e) {
+            // localStorage not available, ignore
+        }
+    }
+
     /**
      * Initialize all poll containers on the page
      */
@@ -108,9 +147,11 @@
             pollDiv.appendChild(desc);
         }
 
-        // Check if poll is closed
+        // Check if poll is closed or user already voted
         if (poll.status === 'closed') {
             renderResults(pollDiv, poll);
+        } else if (hasVoted(token)) {
+            renderAlreadyVoted(pollDiv, token);
         } else {
             renderVotingForm(pollDiv, poll, token, container);
         }
@@ -186,6 +227,28 @@
     }
 
     /**
+     * Render already voted message
+     */
+    function renderAlreadyVoted(pollDiv, token) {
+        var votedDiv = document.createElement('div');
+        votedDiv.className = 'dte-voted';
+
+        var votedName = getVotedName(token);
+        var msg = document.createElement('p');
+        msg.textContent = votedName
+            ? 'You already voted as "' + votedName + '"'
+            : 'You already voted on this poll';
+        votedDiv.appendChild(msg);
+
+        var hint = document.createElement('p');
+        hint.className = 'dte-voted-hint';
+        hint.textContent = 'Clear your browser data to vote again.';
+        votedDiv.appendChild(hint);
+
+        pollDiv.appendChild(votedDiv);
+    }
+
+    /**
      * Render results (for closed polls)
      */
     function renderResults(pollDiv, poll) {
@@ -248,6 +311,8 @@
             return response.json();
         })
         .then(function(data) {
+            // Mark as voted in localStorage
+            markAsVoted(token, name);
             // Show success and reload poll
             showSuccess(container, 'Vote recorded!');
             setTimeout(function() {
