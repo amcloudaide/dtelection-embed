@@ -47,6 +47,9 @@
 }
 
 .dte-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
     font-size: 11px;
     color: #94a3b8;
     text-decoration: none;
@@ -58,8 +61,13 @@
 }
 
 .dte-brand:hover {
-    color: #6366f1;
-    border-color: #6366f1;
+    color: #14b8a6;
+    border-color: #14b8a6;
+}
+
+.dte-brand-icon {
+    width: 14px;
+    height: 14px;
 }
 
 /* Description */
@@ -246,10 +254,14 @@
 
 .dte-result-bar {
     height: 100%;
-    background: linear-gradient(90deg, #818cf8, #6366f1);
+    background: linear-gradient(90deg, #5eead4, #14b8a6);
     border-radius: 6px;
     min-width: 4px;
     transition: width 0.3s ease;
+}
+
+.dte-result-bar.dte-leading {
+    background: linear-gradient(90deg, #fdba74, #f97316);
 }
 
 .dte-result-count {

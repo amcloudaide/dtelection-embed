@@ -131,10 +131,19 @@
 
         var brand = document.createElement('a');
         brand.className = 'dte-brand';
-        brand.href = 'https://dtelection.com';
+        brand.href = 'https://dtelection.com/poll/' + token;
         brand.target = '_blank';
         brand.rel = 'noopener noreferrer';
-        brand.textContent = 'dtElection';
+        brand.title = 'View on dtElection';
+
+        var brandIcon = document.createElement('img');
+        brandIcon.className = 'dte-brand-icon';
+        brandIcon.src = 'https://dtelection.com/favicon.png';
+        brandIcon.alt = '';
+        brand.appendChild(brandIcon);
+
+        var brandText = document.createTextNode('dtElection');
+        brand.appendChild(brandText);
         header.appendChild(brand);
 
         pollDiv.appendChild(header);
@@ -233,8 +242,6 @@
      * @param {string|null} votedAsName - Name user voted as, or null if just viewing closed poll
      */
     function renderResults(pollDiv, poll, votedAsName) {
-        console.log('renderResults called', { poll_type: poll.poll_type, options: poll.options, time_slots: poll.time_slots, participants: poll.participants, votedAsName: votedAsName });
-
         var resultsDiv = document.createElement('div');
         resultsDiv.className = 'dte-results';
 
@@ -293,6 +300,9 @@
 
                 var bar = document.createElement('div');
                 bar.className = 'dte-result-bar';
+                if (count === maxVotes && maxVotes > 0) {
+                    bar.className += ' dte-leading';
+                }
                 bar.style.width = percentage + '%';
                 barWrap.appendChild(bar);
 

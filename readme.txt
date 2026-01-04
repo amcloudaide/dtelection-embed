@@ -3,7 +3,7 @@ Contributors: dtelection
 Tags: poll, voting, survey, scheduling, embed
 Requires at least: 5.0
 Tested up to: 6.4
-Stable tag: 1.1.0
+Stable tag: 1.3.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -70,6 +70,13 @@ The current version uses dtElection branding. Custom styling options are planned
 3. Mobile responsive view
 
 == Changelog ==
+
+= 1.3.0 =
+* Added dtElection favicon to brand link
+* Brand link now opens the actual poll on dtElection
+* Result bars now use dtElection colors (teal/orange)
+* Leading vote highlighted in orange
+* Improved visual design
 
 = 1.1.0 =
 * Added duplicate vote prevention (remembers if user voted via localStorage)
