@@ -210,21 +210,23 @@
 
         var items = poll.poll_type === 'when' ? poll.time_slots : poll.options;
         var isWhen = poll.poll_type === 'when';
+        var singleSelection = poll.settings && poll.settings.single_selection;
 
         if (items && items.length > 0) {
             items.forEach(function(item, index) {
                 var label = document.createElement('label');
                 label.className = 'dte-option';
 
-                var checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.name = 'vote';
-                checkbox.value = item.id;
+                var input = document.createElement('input');
+                // Use radio buttons for single selection, checkboxes for multiple
+                input.type = singleSelection ? 'radio' : 'checkbox';
+                input.name = singleSelection ? 'vote-single' : 'vote';
+                input.value = item.id;
 
                 var span = document.createElement('span');
                 span.textContent = isWhen ? formatTimeSlot(item) : item.label;
 
-                label.appendChild(checkbox);
+                label.appendChild(input);
                 label.appendChild(span);
                 optionsDiv.appendChild(label);
             });
@@ -242,7 +244,7 @@
         // Handle form submission
         form.addEventListener('submit', function(e) {
             e.preventDefault();
-            handleVote(form, token, container);
+            handleVote(form, token, container, singleSelection);
         });
 
         pollDiv.appendChild(form);
@@ -343,7 +345,7 @@
     /**
      * Handle vote submission
      */
-    function handleVote(form, token, container) {
+    function handleVote(form, token, container, singleSelection) {
         var nameInput = form.querySelector('input[name="name"]');
         var name = nameInput.value.trim();
 
@@ -352,16 +354,23 @@
             return;
         }
 
-        var checkboxes = form.querySelectorAll('input[name="vote"]:checked');
-        if (checkboxes.length === 0) {
-            alert('Please select at least one option');
+        // Handle both single (radio) and multiple (checkbox) selection
+        var selectedInputs;
+        if (singleSelection) {
+            selectedInputs = form.querySelectorAll('input[name="vote-single"]:checked');
+        } else {
+            selectedInputs = form.querySelectorAll('input[name="vote"]:checked');
+        }
+
+        if (selectedInputs.length === 0) {
+            alert('Please select ' + (singleSelection ? 'an option' : 'at least one option'));
             return;
         }
 
         var votes = [];
-        checkboxes.forEach(function(cb) {
+        selectedInputs.forEach(function(input) {
             votes.push({
-                slot_id: cb.value,
+                slot_id: input.value,
                 response: 'yes'
             });
         });
