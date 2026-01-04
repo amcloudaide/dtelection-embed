@@ -138,7 +138,9 @@
 
         var brandIcon = document.createElement('img');
         brandIcon.className = 'dte-brand-icon';
-        brandIcon.src = 'https://dtelection.com/favicon.png';
+        brandIcon.src = (typeof dtelectionConfig !== 'undefined' && dtelectionConfig.pluginUrl)
+            ? dtelectionConfig.pluginUrl + 'assets/images/icon.png'
+            : 'https://dtelection.com/favicon-16x16.png';
         brandIcon.alt = '';
         brand.appendChild(brandIcon);
 
