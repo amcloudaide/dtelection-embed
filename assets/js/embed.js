@@ -73,6 +73,17 @@
         fetch(API_URL + '/' + encodeURIComponent(token))
             .then(function(response) {
                 if (!response.ok) {
+                    if (response.status === 403) {
+                        return response.json().then(function(data) {
+                            var code = data.error?.code || 'FORBIDDEN';
+                            if (code === 'EMBED_DISABLED') {
+                                throw new Error('Embedding is disabled for this poll');
+                            } else if (code === 'DOMAIN_NOT_ALLOWED') {
+                                throw new Error('This poll cannot be embedded on this website');
+                            }
+                            throw new Error('Access denied');
+                        });
+                    }
                     throw new Error('Poll not found');
                 }
                 return response.json();
