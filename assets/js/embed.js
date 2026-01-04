@@ -149,9 +149,9 @@
 
         // Check if poll is closed or user already voted
         if (poll.status === 'closed') {
-            renderResults(pollDiv, poll);
+            renderResults(pollDiv, poll, null);
         } else if (hasVoted(token)) {
-            renderAlreadyVoted(pollDiv, token);
+            renderResults(pollDiv, poll, getVotedName(token));
         } else {
             renderVotingForm(pollDiv, poll, token, container);
         }
@@ -227,38 +227,90 @@
     }
 
     /**
-     * Render already voted message
+     * Render results with bars (for closed polls or after voting)
+     * @param {Element} pollDiv - Container element
+     * @param {Object} poll - Poll data with participants and votes
+     * @param {string|null} votedAsName - Name user voted as, or null if just viewing closed poll
      */
-    function renderAlreadyVoted(pollDiv, token) {
-        var votedDiv = document.createElement('div');
-        votedDiv.className = 'dte-voted';
-
-        var votedName = getVotedName(token);
-        var msg = document.createElement('p');
-        msg.textContent = votedName
-            ? 'You already voted as "' + votedName + '"'
-            : 'You already voted on this poll';
-        votedDiv.appendChild(msg);
-
-        var hint = document.createElement('p');
-        hint.className = 'dte-voted-hint';
-        hint.textContent = 'Clear your browser data to vote again.';
-        votedDiv.appendChild(hint);
-
-        pollDiv.appendChild(votedDiv);
-    }
-
-    /**
-     * Render results (for closed polls)
-     */
-    function renderResults(pollDiv, poll) {
+    function renderResults(pollDiv, poll, votedAsName) {
         var resultsDiv = document.createElement('div');
         resultsDiv.className = 'dte-results';
 
-        var closedMsg = document.createElement('p');
-        closedMsg.className = 'dte-closed';
-        closedMsg.textContent = 'This poll is closed.';
-        resultsDiv.appendChild(closedMsg);
+        // Show closed message if poll is closed
+        if (poll.status === 'closed') {
+            var closedMsg = document.createElement('p');
+            closedMsg.className = 'dte-closed';
+            closedMsg.textContent = 'This poll is closed.';
+            resultsDiv.appendChild(closedMsg);
+        }
+
+        // Get items (time slots or options)
+        var items = poll.poll_type === 'when' ? poll.time_slots : poll.options;
+        var isWhen = poll.poll_type === 'when';
+
+        if (items && items.length > 0) {
+            // Count votes per item
+            var voteCounts = {};
+            var maxVotes = 0;
+
+            items.forEach(function(item) {
+                voteCounts[item.id] = 0;
+            });
+
+            // Count 'yes' votes from participants
+            if (poll.participants && poll.participants.length > 0) {
+                poll.participants.forEach(function(participant) {
+                    if (participant.votes) {
+                        participant.votes.forEach(function(vote) {
+                            if (vote.response === 'yes' && voteCounts.hasOwnProperty(vote.slot_id)) {
+                                voteCounts[vote.slot_id]++;
+                                if (voteCounts[vote.slot_id] > maxVotes) {
+                                    maxVotes = voteCounts[vote.slot_id];
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+
+            // Render each item with bar
+            items.forEach(function(item) {
+                var count = voteCounts[item.id] || 0;
+                var percentage = maxVotes > 0 ? (count / maxVotes) * 100 : 0;
+
+                var barContainer = document.createElement('div');
+                barContainer.className = 'dte-result-item';
+
+                var label = document.createElement('div');
+                label.className = 'dte-result-label';
+                label.textContent = isWhen ? formatTimeSlot(item) : item.label;
+                barContainer.appendChild(label);
+
+                var barWrap = document.createElement('div');
+                barWrap.className = 'dte-result-bar-wrap';
+
+                var bar = document.createElement('div');
+                bar.className = 'dte-result-bar';
+                bar.style.width = percentage + '%';
+                barWrap.appendChild(bar);
+
+                var countSpan = document.createElement('span');
+                countSpan.className = 'dte-result-count';
+                countSpan.textContent = count;
+                barWrap.appendChild(countSpan);
+
+                barContainer.appendChild(barWrap);
+                resultsDiv.appendChild(barContainer);
+            });
+        }
+
+        // Show "You voted as xxx" if applicable
+        if (votedAsName) {
+            var votedMsg = document.createElement('p');
+            votedMsg.className = 'dte-voted-msg';
+            votedMsg.textContent = 'You voted as "' + votedAsName + '"';
+            resultsDiv.appendChild(votedMsg);
+        }
 
         pollDiv.appendChild(resultsDiv);
     }
