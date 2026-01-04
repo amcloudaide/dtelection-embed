@@ -233,6 +233,8 @@
      * @param {string|null} votedAsName - Name user voted as, or null if just viewing closed poll
      */
     function renderResults(pollDiv, poll, votedAsName) {
+        console.log('renderResults called', { poll_type: poll.poll_type, options: poll.options, time_slots: poll.time_slots, participants: poll.participants, votedAsName: votedAsName });
+
         var resultsDiv = document.createElement('div');
         resultsDiv.className = 'dte-results';
 
