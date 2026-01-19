@@ -2,7 +2,7 @@
 Contributors: dtelection
 Tags: poll, voting, survey, scheduling, embed
 Requires at least: 5.0
-Tested up to: 6.4
+Tested up to: 6.7
 Stable tag: 1.6.0
 Requires PHP: 7.4
 License: GPLv2 or later
@@ -71,9 +71,10 @@ The current version uses dtElection branding. Custom styling options are planned
 
 == Screenshots ==
 
-1. Embedded poll in a WordPress post
-2. Gutenberg block in the editor
-3. Mobile responsive view
+1. Embedded poll in a WordPress post with voting options
+2. dtElection Poll block in the Gutenberg editor
+3. Poll results view with colored progress bars
+4. Admin documentation page with usage guide
 
 == Changelog ==
 
@@ -117,6 +118,9 @@ The current version uses dtElection branding. Custom styling options are planned
 * Inline voting
 
 == Upgrade Notice ==
+
+= 1.6.0 =
+Major update with Yes/Maybe/No voting, email collection, location display, hero images, and white-label support for Pro+ tiers.
 
 = 1.1.0 =
 Duplicate vote prevention and in-admin documentation page.
