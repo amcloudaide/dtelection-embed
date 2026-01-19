@@ -3,7 +3,7 @@
  * Plugin Name: dtElection Poll Embed
  * Plugin URI: https://dtelection.com
  * Description: Embed dtElection polls in your WordPress site with a simple shortcode or Gutenberg block.
- * Version: 1.5.0
+ * Version: 1.6.0
  * Author: dtElection
  * Author URI: https://dtelection.com
  * License: GPL v2 or later
@@ -17,7 +17,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Plugin constants
-define('DTELECTION_VERSION', '1.5.0');
+define('DTELECTION_VERSION', '1.6.0');
 define('DTELECTION_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('DTELECTION_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('DTELECTION_API_URL', 'https://dtelection.com/api/v1/embed');

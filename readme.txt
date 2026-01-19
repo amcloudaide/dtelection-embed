@@ -3,7 +3,7 @@ Contributors: dtelection
 Tags: poll, voting, survey, scheduling, embed
 Requires at least: 5.0
 Tested up to: 6.4
-Stable tag: 1.3.0
+Stable tag: 1.6.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -22,6 +22,12 @@ Embed dtElection polls in your WordPress site. Let visitors vote on polls direct
 * **Shortcode support** - Works with classic editor too
 * **Responsive design** - Looks great on all devices
 * **Real-time results** - Poll updates after voting
+* **Yes/Maybe/No voting** - Full support for 3-option voting
+* **Email collection** - Optional email requirement for voters
+* **Location display** - Show poll location with Google Maps link
+* **Hero images** - Display poll hero images (Pro+ feature)
+* **External links** - Show attached links (Enterprise feature)
+* **White-label option** - Remove branding for Pro+ tiers
 
 = How to Use =
 
@@ -70,6 +76,25 @@ The current version uses dtElection branding. Custom styling options are planned
 3. Mobile responsive view
 
 == Changelog ==
+
+= 1.6.0 =
+* Added Yes/Maybe/No voting buttons for polls with "allow maybe" enabled
+* Added email input field when poll requires email
+* Added location display with clickable Google Maps link
+* Added hero image support (displayed at top of poll)
+* Added external link display (Enterprise feature)
+* Added conditional branding - Pro/Enterprise tiers can hide dtElection branding
+* Improved results display showing separate yes/maybe counts
+* Updated responsive styles for mobile devices
+
+= 1.5.0 =
+* Added single selection mode (radio buttons vs checkboxes)
+* Improved error handling with specific error messages
+* Better domain whitelist validation
+
+= 1.4.0 =
+* Added support for closed poll detection
+* Improved vote submission error handling
 
 = 1.3.0 =
 * Added dtElection favicon to brand link

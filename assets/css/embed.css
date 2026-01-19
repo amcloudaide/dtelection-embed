@@ -1,6 +1,7 @@
 /**
  * dtElection Poll Embed Styles
  * Branded styling that matches dtelection.com
+ * Version: 1.6.0
  */
 
 /* Container */
@@ -15,10 +16,10 @@
     width: 100%;
     border: 1px solid #e2e8f0;
     border-radius: 16px;
-    padding: 24px;
     background: #fff;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
+    overflow: hidden;
 }
 
 .dte-poll *,
@@ -27,13 +28,40 @@
     box-sizing: border-box;
 }
 
+/* Hero image */
+.dte-hero-image {
+    width: 100%;
+    height: auto;
+    max-height: 200px;
+    object-fit: cover;
+    display: block;
+}
+
+/* Content padding (applied to elements after hero image) */
+.dte-header,
+.dte-desc,
+.dte-location,
+.dte-external-link,
+.dte-form,
+.dte-results,
+.dte-footer {
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
 /* Header */
 .dte-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    padding-top: 24px;
     margin-bottom: 12px;
     gap: 12px;
+}
+
+/* Adjust header padding when hero image is present */
+.dte-hero-image + .dte-header {
+    padding-top: 16px;
 }
 
 .dte-title {
@@ -78,13 +106,68 @@
     line-height: 1.5;
 }
 
+/* Location */
+.dte-location {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 12px;
+}
+
+.dte-location-icon {
+    font-size: 14px;
+    line-height: 1;
+}
+
+.dte-location-link {
+    color: #6366f1;
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.dte-location-link:hover {
+    color: #4f46e5;
+    text-decoration: underline;
+}
+
+.dte-location-text {
+    color: #64748b;
+}
+
+/* External link */
+.dte-external-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    margin-bottom: 16px;
+}
+
+.dte-external-link-icon {
+    font-size: 14px;
+    line-height: 1;
+}
+
+.dte-external-link-url {
+    color: #6366f1;
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.dte-external-link-url:hover {
+    color: #4f46e5;
+    text-decoration: underline;
+}
+
 /* Form */
 .dte-form {
     margin: 0;
-    padding: 0;
+    padding-bottom: 0;
 }
 
-/* Name input */
+/* Name/Email input */
 .dte-input {
     width: 100%;
     padding: 10px 14px;
@@ -92,7 +175,7 @@
     border-radius: 10px;
     font-size: 14px;
     font-family: inherit;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
     background: #fff;
     color: #1e293b;
     transition: all 0.15s ease;
@@ -115,6 +198,7 @@
     gap: 8px;
 }
 
+/* Simple option (checkbox/radio mode) */
 .dte-option {
     display: flex;
     align-items: center;
@@ -139,7 +223,8 @@
     background: #eef2ff;
 }
 
-.dte-option input[type="checkbox"] {
+.dte-option input[type="checkbox"],
+.dte-option input[type="radio"] {
     width: 18px;
     height: 18px;
     margin: 0;
@@ -151,6 +236,79 @@
     font-size: 14px;
     color: #1e293b;
     line-height: 1.4;
+}
+
+/* Option row (Yes/Maybe/No button mode) */
+.dte-option-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background: #fff;
+}
+
+.dte-option-label {
+    font-size: 14px;
+    color: #1e293b;
+    line-height: 1.4;
+}
+
+.dte-vote-buttons {
+    display: flex;
+    gap: 6px;
+}
+
+.dte-vote-btn {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: #fff;
+    font-size: 12px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    color: #64748b;
+}
+
+.dte-vote-btn:hover {
+    background: #f8fafc;
+}
+
+/* Yes button */
+.dte-vote-btn.dte-vote-yes.active {
+    background: #dcfce7;
+    border-color: #22c55e;
+    color: #15803d;
+}
+
+.dte-vote-btn.dte-vote-yes:hover {
+    border-color: #22c55e;
+}
+
+/* Maybe button */
+.dte-vote-btn.dte-vote-maybe.active {
+    background: #fef3c7;
+    border-color: #f59e0b;
+    color: #b45309;
+}
+
+.dte-vote-btn.dte-vote-maybe:hover {
+    border-color: #f59e0b;
+}
+
+/* No button */
+.dte-vote-btn.dte-vote-no.active {
+    background: #fee2e2;
+    border-color: #ef4444;
+    color: #b91c1c;
+}
+
+.dte-vote-btn.dte-vote-no:hover {
+    border-color: #ef4444;
 }
 
 /* Submit button */
@@ -180,7 +338,8 @@
 
 /* Footer */
 .dte-footer {
-    margin-top: 16px;
+    padding-top: 16px;
+    padding-bottom: 24px;
     text-align: center;
     font-size: 13px;
     color: #94a3b8;
@@ -216,7 +375,8 @@
 
 /* Results (closed polls or after voting) */
 .dte-results {
-    padding: 8px 0;
+    padding-top: 8px;
+    padding-bottom: 0;
 }
 
 .dte-closed {
@@ -270,6 +430,7 @@
     font-size: 12px;
     font-weight: 600;
     color: #64748b;
+    white-space: nowrap;
 }
 
 /* Voted message */
@@ -285,9 +446,27 @@
 
 /* Responsive */
 @media (max-width: 480px) {
-    .dte-poll {
-        padding: 16px;
-        border-radius: 12px;
+    .dte-hero-image {
+        max-height: 150px;
+    }
+
+    .dte-header,
+    .dte-desc,
+    .dte-location,
+    .dte-external-link,
+    .dte-form,
+    .dte-results,
+    .dte-footer {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .dte-header {
+        padding-top: 16px;
+    }
+
+    .dte-footer {
+        padding-bottom: 16px;
     }
 
     .dte-title {
@@ -296,5 +475,17 @@
 
     .dte-option {
         padding: 10px;
+    }
+
+    .dte-option-row {
+        padding: 10px;
+    }
+
+    .dte-vote-buttons {
+        flex-wrap: wrap;
+    }
+
+    .dte-vote-btn {
+        min-width: calc(33.33% - 4px);
     }
 }
