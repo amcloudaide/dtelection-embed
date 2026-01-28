@@ -164,9 +164,12 @@
             brandIcon.className = 'dte-brand-icon';
             brandIcon.src = (typeof dtelectionConfig !== 'undefined' && dtelectionConfig.pluginUrl)
                 ? dtelectionConfig.pluginUrl + 'assets/images/icon.png'
-                : 'https://dtelection.com/favicon-16x16.png';
+                : '';
             brandIcon.alt = '';
-            brand.appendChild(brandIcon);
+            // Only add icon if we have a valid source
+            if (brandIcon.src) {
+                brand.appendChild(brandIcon);
+            }
 
             var brandText = document.createTextNode('dtElection');
             brand.appendChild(brandText);

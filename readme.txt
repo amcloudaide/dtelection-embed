@@ -1,9 +1,9 @@
 === dtElection Poll Embed ===
-Contributors: dtelection
+Contributors: amcloudaide
 Tags: poll, voting, survey, scheduling, embed
 Requires at least: 5.0
 Tested up to: 6.9
-Stable tag: 1.6.0
+Stable tag: 1.6.1
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -69,6 +69,28 @@ Yes! There's a dedicated "dtElection Poll" block for the Gutenberg editor.
 
 The current version uses dtElection branding. Custom styling options are planned for a future release.
 
+== External Services ==
+
+This plugin connects to the dtElection API to fetch poll data and submit votes. This is the core functionality of the plugin - it cannot work without this external service.
+
+= What data is sent =
+
+* **Poll token** - When displaying an embedded poll, the plugin sends the poll token to fetch poll details (title, options, current votes).
+* **Vote data** - When a visitor submits their vote, the plugin sends their name, selected options, and optionally their email (if the poll requires it).
+
+= When data is sent =
+
+* When a page containing an embedded poll is loaded (to fetch poll data)
+* When a visitor clicks "Vote" to submit their selection
+
+= Service provider =
+
+This service is provided by dtElection.
+
+* Service website: [https://dtelection.com](https://dtelection.com)
+* Terms of Service: [https://dtelection.com/terms](https://dtelection.com/terms)
+* Privacy Policy: [https://dtelection.com/privacy](https://dtelection.com/privacy)
+
 == Screenshots ==
 
 1. Embedded poll in a WordPress post with voting options
@@ -77,6 +99,12 @@ The current version uses dtElection branding. Custom styling options are planned
 4. Admin documentation page with usage guide
 
 == Changelog ==
+
+= 1.6.1 =
+* Fixed text domain to match plugin slug for WordPress.org translations
+* Added External Services documentation for API transparency
+* Removed remote favicon dependency - now uses local assets only
+* Updated contributor information
 
 = 1.6.0 =
 * Added Yes/Maybe/No voting buttons for polls with "allow maybe" enabled

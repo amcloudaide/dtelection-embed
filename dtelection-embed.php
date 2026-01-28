@@ -3,12 +3,12 @@
  * Plugin Name: dtElection Poll Embed
  * Plugin URI: https://github.com/amcloudaide/dtelection-embed
  * Description: Embed dtElection polls in your WordPress site with a simple shortcode or Gutenberg block.
- * Version: 1.6.0
+ * Version: 1.6.1
  * Author: dtElection
  * Author URI: https://dtelection.com
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: dtelection-poll-embed
+ * Text Domain: amcloudaide-poll-embed-for-dtelection
  */
 
 // Prevent direct access
@@ -17,7 +17,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Plugin constants
-define('DTELECTION_VERSION', '1.6.0');
+define('DTELECTION_VERSION', '1.6.1');
 define('DTELECTION_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('DTELECTION_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('DTELECTION_API_URL', 'https://dtelection.com/api/v1/embed');
@@ -42,14 +42,14 @@ add_action('plugins_loaded', 'dtelection_init');
  */
 function dtelection_register_assets() {
     wp_register_style(
-        'dtelection-embed',
+        'amcloudaide-poll-embed-for-dtelection',
         DTELECTION_PLUGIN_URL . 'assets/css/embed.css',
         array(),
         DTELECTION_VERSION
     );
 
     wp_register_script(
-        'dtelection-embed',
+        'amcloudaide-poll-embed-for-dtelection',
         DTELECTION_PLUGIN_URL . 'assets/js/embed.js',
         array(),
         DTELECTION_VERSION,
@@ -57,7 +57,7 @@ function dtelection_register_assets() {
     );
 
     // Pass config to JavaScript
-    wp_localize_script('dtelection-embed', 'dtelectionConfig', array(
+    wp_localize_script('amcloudaide-poll-embed-for-dtelection', 'dtelectionConfig', array(
         'apiUrl' => DTELECTION_API_URL,
         'pluginUrl' => DTELECTION_PLUGIN_URL
     ));
@@ -131,8 +131,8 @@ function dtelection_render_shortcode($atts) {
     }
 
     // Enqueue assets
-    wp_enqueue_style('dtelection-embed');
-    wp_enqueue_script('dtelection-embed');
+    wp_enqueue_style('amcloudaide-poll-embed-for-dtelection');
+    wp_enqueue_script('amcloudaide-poll-embed-for-dtelection');
 
     // Return container for JavaScript to populate
     return sprintf(
@@ -157,8 +157,8 @@ function dtelection_render_block($attributes) {
  * Add settings link to plugins page
  */
 function dtelection_plugin_action_links($links) {
-    $docs_link = '<a href="' . admin_url('admin.php?page=dtelection-docs') . '">' . __('How to Use', 'dtelection-embed') . '</a>';
-    $get_polls_link = '<a href="https://dtelection.com" target="_blank">' . __('Get Polls', 'dtelection-embed') . '</a>';
+    $docs_link = '<a href="' . admin_url('admin.php?page=dtelection-docs') . '">' . __('How to Use', 'amcloudaide-poll-embed-for-dtelection') . '</a>';
+    $get_polls_link = '<a href="https://dtelection.com" target="_blank">' . __('Get Polls', 'amcloudaide-poll-embed-for-dtelection') . '</a>';
     array_unshift($links, $get_polls_link);
     array_unshift($links, $docs_link);
     return $links;
@@ -170,8 +170,8 @@ add_filter('plugin_action_links_' . plugin_basename(__FILE__), 'dtelection_plugi
  */
 function dtelection_admin_menu() {
     add_menu_page(
-        __('dtElection', 'dtelection-embed'),
-        __('dtElection', 'dtelection-embed'),
+        __('dtElection', 'amcloudaide-poll-embed-for-dtelection'),
+        __('dtElection', 'amcloudaide-poll-embed-for-dtelection'),
         'manage_options',
         'dtelection-docs',
         'dtelection_render_docs_page',
